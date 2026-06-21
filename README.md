@@ -1,28 +1,44 @@
-# Project
+*This project has been created as part of the 42 curriculum by mmichele*
+# ft_ping
 
-## Table of content
-- [Prerequisits](#prerequisits)
-- [Compiling targets](#compiling-targets)
-- [Execute](#execute)
+This projects aims to reproduce the `ping` command from `inetutils`.
 
-## Prerequisits
+- [Instruction](#instruction)
+- [Ressources](#ressources)
+- [Documentation](#documentation)
 
-- GNU Make
-- GCC
+## Instruction
+```
+apt remove iputils-ping
+sudo apt-get install inetutils-ping
+ping -V
+```
 
-## Compiling targets
-| Command      | Description                                                                |
-| :----------- | :------------------------------------------------------------------------- |
-| `make`       | Compile main program and test environment                                  |
-| `make prog`  | Compile main program                                                       |
-| `make test`  | Compile test environment and linking it with main program components       |
-| `make clear` | Delete all previous compiled files                                         |
-| `make lsan`  | Compile main and test environment with address and memory leak sanitizers  |
-| `make tsan`  | Compile main and test environment with thread sanitizer                    |
-| `make prod`  | Compile main program only with level 3 optimization flag                   |
+| Command       | Description                                                                |
+| :------------ | :------------------------------------------------------------------------- |
+| `make`        | Compile main program and test environment                                  |
+| `make clean`  | Delete only intermediate compile files                                     |
+| `make fclean` | Delete all previous compiled files                                         |
+| `make lsan`   | Compile main and test environment with address and memory leak sanitizers  |
 
 It's recommended to `make clear` before compiling with different flags to avoid *bad linkings*.
 
-## Execute
+`sudo` is needed to execute the program due to the protocol used on the socket.
 
-The main program and test executable are both compiled inside the `out` directory.
+## Ressources
+- https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol
+- https://en.wikipedia.org/wiki/Fully_qualified_domain_name
+
+## Documentation
+`ping` command uses [Internet Control Message Protocol](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol), shortened ICMP.
+
+The function `gethostbyname` could've been used for simplicity, however this project uses 
+`getaddrinfo` which is a bit harder to use and complete but more modern, and POSIX compliant.
+
+Parameters of the `getaddrinfo` function :
+| parameter                    | description           |
+| -                            | -                     |
+| const char *node             | hostname / IP address |
+| const char *service          | port                  |
+| const struct addrinfo *hints | result filtering      |
+| struct addrinfo **res        | results               |
